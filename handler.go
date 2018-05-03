@@ -106,6 +106,14 @@ func (h *socketHandler) Join(room string) error {
 	return nil
 }
 
+func (h *socketHandler) JoinBy(room string, index string) error {
+	if err := h.baseHandler.broadcast.JoinBy(h.broadcastName(room), index, h.socket); err != nil {
+		return err
+	}
+	h.rooms[room] = struct{}{}
+	return nil
+}
+
 func (h *socketHandler) Leave(room string) error {
 	if err := h.baseHandler.broadcast.Leave(h.broadcastName(room), h.socket); err != nil {
 		return err

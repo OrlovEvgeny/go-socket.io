@@ -28,6 +28,9 @@ type Socket interface {
 	// Join joins the room.
 	Join(room string) error
 
+	// JoinBy joins the room and .
+	JoinBy(room string, index string) error
+
 	// Leave leaves the room.
 	Leave(room string) error
 
