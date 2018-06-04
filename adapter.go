@@ -11,6 +11,9 @@ type BroadcastAdaptor interface {
 	// JoinBy causes the socket to join a room by uniq index.
 	JoinBy(room string, index string, socket Socket) error
 
+	//LeaveBy causes the socket to leave a room.
+	LeaveBy(room string, index string, socket Socket) error
+
 	// Leave causes the socket to leave a room.
 	Leave(room string, socket Socket) error
 
@@ -55,6 +58,22 @@ func (b *broadcast) JoinBy(room string, index string, socket Socket) error  {
 	sockets[index] = socket
 	b.m[room] = sockets
 	b.Unlock()
+	return nil
+}
+
+func (b *broadcast) LeaveBy(room string, index string, socket Socket) error {
+	b.Lock()
+	defer b.Unlock()
+	sockets, ok := b.m[room]
+	if !ok {
+		return nil
+	}
+	delete(sockets, index)
+	if len(sockets) == 0 {
+		delete(b.m, room)
+		return nil
+	}
+	b.m[room] = sockets
 	return nil
 }
 

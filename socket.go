@@ -32,6 +32,9 @@ type Socket interface {
 	JoinBy(room string, index string) error
 
 	// Leave leaves the room.
+	LeaveBy(room string, index string) error
+
+	// Leave leaves the room.
 	Leave(room string) error
 
 	// Disconnect disconnect the socket.

@@ -114,6 +114,14 @@ func (h *socketHandler) JoinBy(room string, index string) error {
 	return nil
 }
 
+func (h *socketHandler) LeaveBy(room string, index string) error {
+	if err := h.baseHandler.broadcast.LeaveBy(h.broadcastName(room), index, h.socket); err != nil {
+		return err
+	}
+	delete(h.rooms, room)
+	return nil
+}
+
 func (h *socketHandler) Leave(room string) error {
 	if err := h.baseHandler.broadcast.Leave(h.broadcastName(room), h.socket); err != nil {
 		return err
